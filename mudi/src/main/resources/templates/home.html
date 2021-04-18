@@ -1,0 +1,64 @@
+<html>
+<head th:replace="~{header :: head}"></head>
+<body>	
+	<div th:replace="~{header :: logo}"/>
+	
+	<div class="container">
+		
+		<div th:replace="~{header :: titulo('Meus Pedidos')}"/>
+
+		<nav
+			class="navbar navbar-expand navbar-light bg-light d-flex justify-content-center mb-3">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:classappend="${status} == null ? 'active'"
+					aria-current="page" href="/home">Todos</a></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'aguardando' ? 'active'"
+					aria-current="page" href="/home/aguardando">Aguardando</a></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'aprovado' ? 'active'"
+					aria-current="page" href="/home/aprovado">Aprovado</a></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'entregue' ? 'active'"
+					aria-current="page" href="/home/entregue">Entregue</a></li>
+			</ul>
+			<a href="/pedido/formulario">
+				<button class="btn btn-outline-success" type="submit">Novo</button>
+			</a>
+
+		</nav>
+		<div class="card mb-5" th:each="pedido : ${pedidos}">
+			<th:block th:switch="${pedido.status.name()}">
+				<div th:case="'AGUARDANDO'" class="card-header alert-warning" th:text="${pedido.nomeProduto}"></div>
+				<div th:case="'APROVADO'"   class="card-header alert-success" th:text="${pedido.nomeProduto}"></div>
+				<div th:case="'ENTREGUE'"   class="card-header alert-dark"    th:text="${pedido.nomeProduto}"></div>
+				<div th:case="*"    		class="card-header alert-warning" th:text="${pedido.nomeProduto}"></div>
+			</th:block>
+
+			<div class="card-body">
+				<div class="row">
+					<div class="col-8">
+						<div>
+							Valor: <span th:text="${#numbers.formatCurrency(pedido.valorProduto)}"></span>
+						</div>
+						<div>
+							Data da entrega: <span th:text="${#temporals.format(pedido.dataEntrega, 'dd/MM/yyyy')}">placeholder</span>
+						</div>
+
+						<div>
+							URL do produto: <input class="form-control"
+								th:value="${pedido.urlProduto}"></<input>
+						</div>
+						<div>Descrição:</div>
+						<div>
+							<textarea class="form-control" th:text="${pedido.descrProduto}"></textarea>
+						</div>
+					</div>
+					<div class="col-4">
+						<div class="img-thumbnail">
+							<img th:src="${pedido.urlImagem}" class="img-fluid">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
