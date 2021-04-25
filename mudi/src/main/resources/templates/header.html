@@ -16,9 +16,21 @@
 	</style>
 </head>
 
-<div th:fragment="logo" class="logo-container mb-4 p-3 justify-content-between d-flex">
-	<span>mudi</span> 
-	<a href="login"><span>login</span></a>
+<div th:fragment="logo" class="">
+	<div class="logo-container p-3 justify-content-between d-flex">
+		<span>mudi</span>
+		<a href="login" class="text-light" sec:authorize="!isAuthenticated()"><span>login</span></a>
+		<a onclick="document.querySelector('#form-login').submit()" class="text-light" sec:authorize="isAuthenticated()" href="#">logout</a>
+		<form id="form-login" th:action="@{/logout}" method="post"></form>		
+	</div>		
+	<div class="row mb-3" sec:authorize="isAuthenticated()">
+		<div class="col">
+			<nav class="nav">
+				<a class="nav-link" th:href="@{/home}"><span>Home</span></a>
+				<a class="nav-link" th:href="@{/usuario/home}"><span>Meus Pedidos</span></a>
+			</nav>
+		</div>
+	</div>
 </div>
 
 <div th:fragment="titulo(text)" class="jumbotron bg-light">

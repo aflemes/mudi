@@ -1,8 +1,11 @@
 package br.com.mvc.mudi.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,50 +25,16 @@ public class HomeController {
 	private PedidoRepository repository;
 	
 	@GetMapping
-	public String home(Model model) {
-		List<Pedido> pedidos = repository.findAll();
+	public String home(Model model, Principal principal) {
+		Sort sort = Sort.by("dataEntrega").ascending();
+		PageRequest paginacao = PageRequest.of(0, 10, sort);
+				
+		List<Pedido> pedidos = repository.findByStatus(StatusPedido.ENTREGUE, paginacao);
 			
 		model.addAttribute("pedidos",pedidos);
 		
 		return "home";
-	}
-	
-	/*
-	@GetMapping("/aguardando")
-	public String aguardando(Model model) {
-		List<Pedido> pedidos = repository.findByStatus(StatusPedido.AGUARDANDO);
-			
-		model.addAttribute("pedidos",pedidos);
-		
-		return "home";
-	}
-
-	@GetMapping("/aprovado")
-	public String aprovado(Model model) {
-		List<Pedido> pedidos = repository.findByStatus(StatusPedido.APROVADO);
-			
-		model.addAttribute("pedidos",pedidos);
-		
-		return "home";
-	}
-	
-	@GetMapping("/entregue")
-	public String entregue(Model model) {
-		List<Pedido> pedidos = repository.findByStatus(StatusPedido.ENTREGUE);
-			
-		model.addAttribute("pedidos",pedidos);
-		
-		return "home";
-	}
-	*/
-	@GetMapping("/{status}")
-	public String byStatus(@PathVariable("status") String status, Model model) {
-		List<Pedido> pedidos = repository.findByStatus(StatusPedido.valueOf(status.toUpperCase()));
-		
-		model.addAttribute("pedidos",pedidos);
-		model.addAttribute("status",status);
-		return "home";
-	}
+	}	
 	
 	@ExceptionHandler(IllegalArgumentException.class)
 	public String onError() {

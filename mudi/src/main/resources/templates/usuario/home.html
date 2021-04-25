@@ -11,15 +11,15 @@
 			class="navbar navbar-expand navbar-light bg-light d-flex justify-content-center mb-3">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link" th:classappend="${status} == null ? 'active'"
-					aria-current="page" href="/home">Todos</a></li>
+					aria-current="page" th:href="@{/usuario/home}">Todos</a></li>
 				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'aguardando' ? 'active'"
-					aria-current="page" href="/home/aguardando">Aguardando</a></li>
+					aria-current="page" th:href="@{/usuario/aguardando}">Aguardando</a></li>
 				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'aprovado' ? 'active'"
-					aria-current="page" href="/home/aprovado">Aprovado</a></li>
+					aria-current="page" th:href="@{/usuario/aprovado}">Aprovado</a></li>
 				<li class="nav-item"><a class="nav-link" th:classappend="${status} == 'entregue' ? 'active'"
-					aria-current="page" href="/home/entregue">Entregue</a></li>
+					aria-current="page" th:href="@{/usuario/entregue}">Entregue</a></li>
 			</ul>
-			<a href="/pedido/formulario">
+			<a th:href="@{/pedido/formulario}">
 				<button class="btn btn-outline-success" type="submit">Novo</button>
 			</a>
 
@@ -46,7 +46,7 @@
 							URL do produto: <input class="form-control"
 								th:value="${pedido.urlProduto}"></<input>
 						</div>
-						<div>Descrição:</div>
+						<div>DescriÃ§Ã£o:</div>
 						<div>
 							<textarea class="form-control" th:text="${pedido.descrProduto}"></textarea>
 						</div>
